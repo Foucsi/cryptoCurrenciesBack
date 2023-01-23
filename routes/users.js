@@ -12,6 +12,25 @@ router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 
+/* GET users listing. */
+router.get("/getAllUsers", async (req, res) => {
+  try {
+    const users = await User.find({});
+    if (users) {
+      const username = users.map((elmt) => elmt.username);
+      res.json({ result: true, username });
+    } else {
+      res.json({ result: false, message: "Aucun utilisateur trouvé" });
+    }
+  } catch (error) {
+    res.json({
+      result: false,
+      message: "erreur lors de la recupération des données",
+      error,
+    });
+  }
+});
+
 /* route signup */
 router.post("/signup", async (req, res) => {
   // Extract the required fields from the request body
