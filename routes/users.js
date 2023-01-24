@@ -76,4 +76,26 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+/* add cryptos */
+
+router.post("/addCrypto/:token", async (req, res) => {
+  const token = req.params.token;
+  const crypto = req.body.crypto;
+  try {
+    const data = await User.findOneAndUpdate(
+      { token },
+      {
+        $push: { cryptos: { cryptos: crypto } },
+      }
+    );
+    if (data) {
+      res.json({ result: true, data });
+    } else {
+      res.json({ result: false, message: "Utilisateur non trouvée" });
+    }
+  } catch (err) {
+    res.json({ result: false });
+  }
+});
+
 module.exports = router;
