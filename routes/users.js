@@ -17,8 +17,7 @@ router.get("/getAllUsers", async (req, res) => {
   try {
     const users = await User.find({});
     if (users) {
-      const username = users.map((elmt) => elmt.username);
-      res.json({ result: true, username });
+      res.json({ result: true, users });
     } else {
       res.json({ result: false, message: "Aucun utilisateur trouvé" });
     }
