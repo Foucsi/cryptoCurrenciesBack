@@ -116,4 +116,27 @@ router.post("/addCrypto/:token", async (req, res) => {
   }
 });
 
+/* route remove crypto */
+
+router.put("/removeCrypto/:token", async (req, res) => {
+  const token = req.params.token;
+  const crypto = req.body.crypto;
+  try {
+    const data = await User.findOneAndUpdate(
+      { token },
+      {
+        $pull: { cryptos: { cryptos: crypto } },
+      },
+      { new: true }
+    );
+    if (data) {
+      res.json({ result: true, data });
+    } else {
+      res.json({ result: false, message: "User not found!" });
+    }
+  } catch (err) {
+    res.json({ result: false, message: err });
+  }
+});
+
 module.exports = router;
