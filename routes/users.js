@@ -12,6 +12,24 @@ router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 
+/*get users by token */
+router.get("/getUserByToken/:token", async (req, res) => {
+  const token = req.params.token;
+
+  try {
+    const user = await User.findOne({ token });
+    const cryptosList = user.cryptos;
+    // retourner le tableau des crypto de l'utilisateur
+    if (user) {
+      res.json({ result: true, cryptosList });
+    } else {
+      res.json({ result: false, message: "User not found!" });
+    }
+  } catch (err) {
+    res.json({ result: false, message: err });
+  }
+});
+
 /* GET users listing. */
 router.get("/getAllUsers", async (req, res) => {
   try {
